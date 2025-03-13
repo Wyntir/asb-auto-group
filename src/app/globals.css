@@ -1,0 +1,29 @@
+@import "tailwindcss";
+
+.btn-primary {
+  @apply bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded transition duration-300;
+}
+.navbar {
+  @apply bg-gradient-to-r from-gray-800 to-gray-900 border-b-2 border-red-600;
+}
+.card {
+  @apply bg-white rounded-lg shadow-lg overflow-hidden transition-transform duration-300 hover:shadow-xl hover:-translate-y-1;
+}
+.card-img {
+  @apply w-full h-64 object-cover;
+}
+.card-body {
+  @apply p-6;
+}
+.card-title {
+  @apply text-xl font-bold mb-2 text-gray-800;
+}
+.card-text {
+  @apply text-gray-600 mb-4;
+}
+.card-price {
+  @apply text-2xl font-bold text-red-600;
+}
+.badge {
+  @apply bg-red-600 text-white text-xs px-2 py-1 rounded uppercase tracking-wider;
+}

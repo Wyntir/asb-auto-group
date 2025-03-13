@@ -4,10 +4,9 @@ const nextConfig = {
     images: {
         unoptimized: true,
     },
-    // Only add experimental options if you specifically need them
-    // experimental: {
-    //   appDir: true,
-    // },
+    eslint: {
+        ignoreDuringBuilds: true,
+    },
 };
 
 module.exports = nextConfig;

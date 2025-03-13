@@ -1,48 +1,38 @@
+// Alternative Approach: Convert to Server Component
 // src/app/inventory/[id]/page.js
-'use client';
-import { getVehicleById, getSimilarVehicles } from '@/lib/data';
+
+import { getVehicleById, getSimilarVehicles, getAllVehicles } from '@/lib/data';
 import VehicleDetailHeader from '@/components/ui/VehicleDetailHeader';
 import VehicleGallery from '@/components/ui/VehicleGallery';
 import VehicleCard from '@/components/ui/VehicleCard';
 import Button from '@/components/ui/Button';
 import Link from 'next/link';
-import { useState, useEffect } from 'react';
 
-// Metadata generation needs to be in a separate file for client components
-// We'll handle the title in the component itself
+// Generate static paths for all vehicles
+export function generateStaticParams() {
+    const vehicles = getAllVehicles();
+    return vehicles.map((vehicle) => ({
+        id: vehicle.id,
+    }));
+}
+
+export function generateMetadata({ params }) {
+    const vehicle = getVehicleById(params.id);
+    return {
+        title: vehicle ? `${vehicle.title} | ASB Auto Group` : 'Vehicle Details | ASB Auto Group',
+        description: vehicle ? vehicle.description : 'View detailed information about our government surplus vehicles.',
+    };
+}
 
 export default function VehicleDetailPage({ params }) {
-    const [vehicle, setVehicle] = useState(null);
-    const [similarVehicles, setSimilarVehicles] = useState([]);
-    const [loading, setLoading] = useState(true);
-
-    useEffect(() => {
-        if (params.id) {
-            const vehicleData = getVehicleById(params.id);
-            setVehicle(vehicleData);
-
-            if (vehicleData) {
-                const similar = getSimilarVehicles(params.id);
-                setSimilarVehicles(similar);
-            }
-
-            setLoading(false);
-        }
-    }, [params.id]);
-
-    if (loading) {
-        return (
-            <div className="flex justify-center items-center min-h-screen">
-                <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-red-600"></div>
-            </div>
-        );
-    }
+    const vehicle = getVehicleById(params.id);
+    const similarVehicles = vehicle ? getSimilarVehicles(params.id) : [];
 
     if (!vehicle) {
         return (
             <div className="container mx-auto px-4 py-12 text-center">
                 <h1 className="text-2xl font-bold text-gray-800 mb-4">Vehicle Not Found</h1>
-                <p className="text-gray-600 mb-8">The vehicle you're looking for doesn't exist or has been removed.</p>
+                <p className="text-gray-600 mb-8">The vehicle you&apos;re looking for doesn&apos;t exist or has been removed.</p>
                 <Link href="/inventory" className="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded transition duration-300">
                     Browse Our Inventory
                 </Link>
